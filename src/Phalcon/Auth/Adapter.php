@@ -20,6 +20,8 @@ abstract class Adapter implements AdapterInterface
 	// supported algs are on JWT::$supported_algs
 	protected $algo = 'HS256';
 
+	protected $allowedAlgos = ['HS256','RSA256'];
+
 	protected $errorMsgs = [];
 
     /**
@@ -71,7 +73,7 @@ abstract class Adapter implements AdapterInterface
 				JWT::$leeway = $this->leeway;
 			}
 
-			$payload = (array) JWT::decode($token, $key, [$this->algo]);
+			$payload = (array) JWT::decode($token, $key, $this->allowedAlgos);
 
 			return $payload;
 

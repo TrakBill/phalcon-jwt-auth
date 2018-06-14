@@ -34,6 +34,14 @@ class Micro
 	// JWT secret key
 	protected $secretKey;
 
+	// RSA public key for verification
+    protected $publicKey;
+
+    // verify only mode
+    protected $verifyOnly;
+
+    //jwt
+
 	// Ignore OPTIONS for CORS support
 	protected $ignoreOptionsMethod = false;
 
@@ -84,12 +92,17 @@ class Micro
 		}
 
 		// secret key is required
-		if(!isset($this->config['secretKey'])) {
-			throw new \InvalidArgumentException('missing jwt secret key');
+		if(!isset($this->config['secretKey']) && !isset($this->config['verifyOnly']) && $this->config['verifyOnly'] !== true) {
+			throw new \InvalidArgumentException('missing jwt secret key and not set to verifyOnly');
 		}
+        if(isset($this->config['publicKey']) && !isset($this->config['algorithm'])) {
+            $this->algo = 'RS256';
+        }
 
-		$this->secretKey = $this->config['secretKey'];
+		$this->secretKey = $this->config['secretKey'] ?? null;
 		$this->payload = (array) $this->config['payload'] ?? [];
+		$this->publicKey = $this->config['publicKey'];
+		$this->algo = $this->config['publicKey'] ?? null;
 
 		$this->app = $app;
 		$this->auth = $auth;
@@ -234,7 +247,11 @@ class Micro
 	{
 		$request = $this->app['request'];
 		$getter = new TokenGetter( new Header($request), new  QueryStr($request));
-		return $this->auth->check($getter, $this->secretKey);
+		if(isset($this->publicKey)){
+            return $this->auth->check($getter, $this->publicKey);
+        }
+        else return $this->auth->check($getter, $this->secretKey);
+
 	}
 
 	/**
@@ -244,6 +261,7 @@ class Micro
      */
 	public function make($data)
 	{
+	    if($this->verifyOnly) throw new \Exception('AuthMiddleware set to verify only');
 		$payload = array_merge($this->payload, $data);
 		return $this->auth->make($payload, $this->secretKey);
 	}

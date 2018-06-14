@@ -99,6 +99,18 @@ $app = new Micro($di);
 // SETUP THE CONFIG
 $authConfig = [
     'secretKey' => '923753F2317FC1EE5B52DF23951B1',
+    'verifyOnly' => true,
+    'publicKey' => <<<EOD
+-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAy+wTnpCdZ+LFAluNRHKq
+weKI4nEgt8e5oHmazyLpxPXquG1kK6xkD1A7wIm+QAaU+MtGobZsfeiWDNNRb93r
+pUwySgJcH3exHMEpyiXFne/FwwAxckHZdFkORkVvIs/Tmb4SOoAZAwWqrrPHP9AW
+TI7aPHWdUV1XMOf43k4eRRGBlPfbyOmSjsYe+3vvURxWFQ2X0EF9II+RvwgnNqw/
+1237KKIfFIrZelDpgnU3SZG5q0CtbTdyLotrQx4r7WmiU/mtijQvRrCCBLJgxg9X
+77xRHK0o2nWhsCOxiij6hxTr0Y6DFlkrdLzb75Ux47T0O+MdoG1ykAWRDxjv6RZT
+kQIDAQAB
+-----END PUBLIC KEY-----
+EOD,
     'payload' => [
             'exp' => 1440,
             'iss' => 'phalcon-jwt-auth'
