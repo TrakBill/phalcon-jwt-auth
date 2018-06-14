@@ -95,9 +95,6 @@ class Micro
 		if(!isset($this->config['secretKey']) && !isset($this->config['verifyOnly']) && $this->config['verifyOnly'] !== true) {
 			throw new \InvalidArgumentException('missing jwt secret key and not set to verifyOnly');
 		}
-        if(isset($this->config['publicKey']) && !isset($this->config['algorithm'])) {
-            $this->algo = 'RS256';
-        }
 
 		$this->secretKey = $this->config['secretKey'] ?? null;
 		$this->payload = (array) $this->config['payload'] ?? [];

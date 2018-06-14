@@ -20,7 +20,7 @@ abstract class Adapter implements AdapterInterface
 	// supported algs are on JWT::$supported_algs
 	protected $algo = 'HS256';
 
-	protected $allowedAlgos = ['HS256','RSA256'];
+	protected $allowedAlgos = ['HS256','RS256'];
 
 	protected $errorMsgs = [];
 
